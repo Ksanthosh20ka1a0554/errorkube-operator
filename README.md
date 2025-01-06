@@ -1,114 +1,78 @@
-# errorkube-operator
-// TODO(user): Add simple overview of use/purpose
+
+# ErrorKube Operator
+![sggw](https://raw.githubusercontent.com/Ksanthosh20ka1a0554/ErrorKube/main/errorkube-frontend/public/images/Error_Kube-logo.png)
+## Overview
+
+The **ErrorKube Operator** is a Kubernetes Operator designed to manage real-time error detection and streaming within Kubernetes clusters. The operator automates the deployment of a backend that collects error events from Kubernetes resources like pods, deployments, and namespaces, and streams them to a frontend UI. The UI, built with React, displays these errors in real time for monitoring purposes. This project is designed to make error monitoring and management more efficient by providing an easy way to track and manage error events.
+
+### Key Features:
+
+-   **Real-time Error Streaming**: The operator streams error events from Kubernetes to a frontend UI.
+-   **Unified Backend & Frontend**: The React frontend is served directly from the Go backend, simplifying the deployment.
+-   **MongoDB Integration**: Errors are stored in a MongoDB database for easier tracking.
+-   **Kubernetes RBAC Management**: Proper permissions are managed using Kubernetes RBAC for accessing event data.
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+
+**ErrorKube** is designed to detect errors in various Kubernetes resources and stream these errors to a frontend UI. The operator automates the deployment and management of both the backend (Go application) and frontend (React application). The backend fetches Kubernetes events and logs, while the frontend displays them in real-time using WebSockets.
+
+MongoDB is used to store error events for persistent logging and historical analysis.
 
 ## Getting Started
 
 ### Prerequisites
-- go version v1.22.0+
-- docker version 17.03+.
-- kubectl version v1.11.3+.
-- Access to a Kubernetes v1.11.3+ cluster.
 
-### To Deploy on the cluster
-**Build and push your image to the location specified by `IMG`:**
+To deploy the ErrorKube Operator, ensure you have the following tools installed:
+
+-   **kubectl version v1.11.3+**
+-   **Access to a Kubernetes v1.11.3+ cluster**
+
+## Installation Steps
+
+To install the ErrorKube operator without needing to download the repository, follow these steps:
+
+### 1. Apply the Operator:
+
+Simply apply the `install.yaml` file from the GitHub repository using the following command:
+```sh
+kubectl apply -f https://raw.githubusercontent.com/ksanthosh20ka1a0554/errorkube-operator/main/install.yaml 
+```
+This will install the operator and all necessary resources.
+
+### 2. Create an ErrorKube instance:
+
+Once the operator is installed, you can create an instance of the ErrorKube resource by applying the example configuration:
 
 ```sh
-make docker-build docker-push IMG=<some-registry>/errorkube-operator:tag
+kubectl apply -f https://raw.githubusercontent.com/ksanthosh20ka1a0554/errorkube-operator/main/example.yml
 ```
+This will create a new `ErrorKube` resource in your cluster. The operator will automatically:
 
-**NOTE:** This image ought to be published in the personal registry you specified.
-And it is required to have access to pull the image from the working environment.
-Make sure you have the proper permission to the registry if the above commands don’t work.
+-   Configure RBAC permissions.
+-   Create a MongoDB deployment and service.
+-   Create the backend deployment and expose it via a service with the specified NodePort.
 
-**Install the CRDs into the cluster:**
+If you're using **Minikube**, use port forwarding to access the application:
 
 ```sh
-make install
+kubectl port-forward service/backend-service <local-port>:<nodeport> 
 ```
-
-**Deploy the Manager to the cluster with the image specified by `IMG`:**
-
+If you're using a **cloud cluster**, use the public IP of the node and the specified NodePort to access the frontend:
 ```sh
-make deploy IMG=<some-registry>/errorkube-operator:tag
+<node-public-ip>:<nodeport>
 ```
-
-> **NOTE**: If you encounter RBAC errors, you may need to grant yourself cluster-admin
-privileges or be logged in as admin.
-
-**Create instances of your solution**
-You can apply the samples (examples) from the config/sample:
-
-```sh
-kubectl apply -k config/samples/
-```
-
->**NOTE**: Ensure that the samples has default values to test it out.
-
-### To Uninstall
-**Delete the instances (CRs) from the cluster:**
-
-```sh
-kubectl delete -k config/samples/
-```
-
-**Delete the APIs(CRDs) from the cluster:**
-
-```sh
-make uninstall
-```
-
-**UnDeploy the controller from the cluster:**
-
-```sh
-make undeploy
-```
-
-## Project Distribution
-
-Following are the steps to build the installer and distribute this project to users.
-
-1. Build the installer for the image built and published in the registry:
-
-```sh
-make build-installer IMG=<some-registry>/errorkube-operator:tag
-```
-
-NOTE: The makefile target mentioned above generates an 'install.yaml'
-file in the dist directory. This file contains all the resources built
-with Kustomize, which are necessary to install this project without
-its dependencies.
-
-2. Using the installer
-
-Users can just run kubectl apply -f <URL for YAML BUNDLE> to install the project, i.e.:
-
-```sh
-kubectl apply -f https://raw.githubusercontent.com/<org>/errorkube-operator/<tag or branch>/dist/install.yaml
-```
-
 ## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
 
-**NOTE:** Run `make help` for more information on all potential `make` targets
+Contributions are invited to this project! Feel free to fork the repository and submit issues or pull requests. Here's how you can contribute:
 
-More information can be found via the [Kubebuilder Documentation](https://book.kubebuilder.io/introduction.html)
+1.  Fork the repository.
+2.  Create a new branch for your changes.
+3.  Submit a pull request with a detailed explanation of your changes.
+
+More information can be found via the[ Operator SDK Documentation](https://sdk.operatorframework.io/docs/).
+
+If you have any questions or would like to discuss an issue, feel free to open an issue on GitHub.
 
 ## License
 
-Copyright 2024.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
