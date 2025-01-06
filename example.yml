@@ -1,0 +1,12 @@
+#Change the spec values according to your need
+apiVersion: errorkube.errorkube.io/v1
+kind: ErrorKube
+metadata:
+  name: example-errorkube
+  namespace: default
+spec:
+  replicas: 1
+  backendPort: 8000
+  backendServiceType: NodePort
+  mongoDBHostPath: /data/mongo
+

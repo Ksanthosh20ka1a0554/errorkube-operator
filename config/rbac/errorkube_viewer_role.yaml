@@ -1,0 +1,23 @@
+# permissions for end users to view errorkubes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: errorkube-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: errorkube-viewer-role
+rules:
+- apiGroups:
+  - errorkube.errorkube.io
+  resources:
+  - errorkubes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - errorkube.errorkube.io
+  resources:
+  - errorkubes/status
+  verbs:
+  - get

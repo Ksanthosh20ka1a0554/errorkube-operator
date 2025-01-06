@@ -1,0 +1,27 @@
+# permissions for end users to edit errorkubes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: errorkube-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: errorkube-editor-role
+rules:
+- apiGroups:
+  - errorkube.errorkube.io
+  resources:
+  - errorkubes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - errorkube.errorkube.io
+  resources:
+  - errorkubes/status
+  verbs:
+  - get

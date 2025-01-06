@@ -1,0 +1,9 @@
+apiVersion: errorkube.errorkube.io/v1
+kind: ErrorKube
+metadata:
+  labels:
+    app.kubernetes.io/name: errorkube-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: errorkube-sample
+spec:
+  # TODO(user): Add fields here
